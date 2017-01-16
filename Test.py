@@ -122,12 +122,14 @@ class Speler(Character):
     
   def showRoom(self):
     #kamer
-    print("---------------------------")
+    print(20 * "-")
     print("Hier ben je: " + kamers[currentKamer]["naam"])
+    print("hier kan je naartoe: %s ") % [i['naam'] for i in kamers.values() if i.get('currentKamer',None) ]
     #leuk zinnetje per kamer
     if "note" in kamers[currentKamer]:
+        print (20 * "-")
         print("--" + kamers[currentKamer]["note"])
-    print("---------------------------")
+    print(20 * "-")
 
   #kamer systeem
   def move(self):
@@ -187,41 +189,41 @@ Commands = {
 kamers = {
 
             1 : {  "naam"  : "de Lobby" ,
-                   "trap"  : 2,
-                   "gangrechtdoor" : 3 }  ,
+                   "a"  : 2,
+                   "w" : 3 }  ,
 
             2 : {  "naam"  : "de Trap" ,
-                   "lobby"  : 1,
+                   "d"  : 1,
                    "note"  : "Terwijl je de trap oploopt hoor je in de verte Henk van Ommen schreeuwen" }  ,            
 
             3 : {  "naam"  : "de Gang rechtdoor" ,
-                   "lobby" : 1,
-                   "gymzaal" : 4, 
-                   "concergie"  : 5,
-                   "gangaula"  : 6 } ,
+                   "s" : 1,
+                   "d" : 4, 
+                   "a"  : 5,
+                   "w"  : 6 } ,
                    
             4 : {  "naam"  : "de Gymzaal" ,
-                   "gangrechtdoor" : 3 } ,
+                   "a" : 3 } ,
             
             5 : {  "naam"  : "de Concierge" ,
-                   "raamwim" : 9,
-                   "gangrechtdoor" : 3 } ,
+                   "a" : 9,
+                   "d" : 3 } ,
             
             6 : {  "naam"  : "de Gang rii aula" ,
-                   "gangrechtdoor" : 3,
-                   "juul" : 7 } ,
+                   "s" : 3,
+                   "a" : 7 } ,
                    
             7 : {  "naam"  : "het Hokje van Juul" ,
-                   "gangaula" : 6,
-                   "kantine" : 8 } ,
+                   "d" : 6,
+                   "a" : 8 } ,
             
             8 : {  "naam"  : "de Aula kantine" ,
-                   "juul" : 7,
-                   "raamwim" : 9 } ,
+                   "d" : 7,
+                   "s" : 9 } ,
             
             9 : {  "naam"  : "het Loerraampje van wim" ,
-                   "kantine" : 8,
-                   "concierge" : 5 }
+                   "w" : 8,
+                   "d" : 5 }
          }
 
 
