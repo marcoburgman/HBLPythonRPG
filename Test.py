@@ -124,7 +124,7 @@ class Speler(Character):
     #kamer
     print(20 * "-")
     print("Hier ben je: " + kamers[currentKamer]["naam"])
-    print("hier kan je naartoe: %s ") % [i['naam'] for i in kamers.values() if i.get('currentKamer',None) ]
+    print("hier kan je naartoe: %s ") % [i['naam'] for i in kamers.values() if kamers[currentKamer]]
     #leuk zinnetje per kamer
     if "note" in kamers[currentKamer]:
         print (20 * "-")
@@ -144,13 +144,13 @@ class Speler(Character):
               currentKamer = kamers[currentKamer][naartoe[1]]
               if randint(0, 1):
                 komtwim = randint(0, 10)
-                if komtwim < 7:
+                if komtwim < 2:
                   self.tegenstander = Tegenstander(self) 
                   print "%s treft %s!" % (self.naam, self.tegenstander.naam) 
                   self.state = 'fight'
                 else:
-                  self.Wim = Wim(self) 
-                  print "%s zag dat %s rotzooi zat te maken, %s komt je straffen!" % (self.Wim.naam, self.naam, self.Wim.naam) 
+                  self.tegenstander = Wim(self)
+                  print "%s zag dat %s rotzooi zat te maken, %s komt je straffen!" % (self.tegenstander.naam, self.naam, self.tegenstander.naam) 
                   self.state = 'fight'
               else: 
                 if randint(0, 1): self.moe()
