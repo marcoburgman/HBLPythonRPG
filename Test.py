@@ -49,6 +49,7 @@ class Speler(Character):
   
   #stoppen
   def quit(self): 
+    os.system('clear')
     print "%s kan niet meer uit de school ontsnappen en gaat dood.\nR.I.P." % self.naam 
     self.levens = 0 
   
@@ -113,26 +114,32 @@ class Speler(Character):
         if randint(0, self.levens) < 10: 
           self.levens = self.levens + 1 
           self.levens_max = self.levens_max + 1 
-          print "%s voelt zich sterker!" % self.naam
+          print "%s voelt meer steroide door zich heen stromen!" % self.naam
       else: self.tegenstander_attacks() 
   
   #als tegenstander je dood
   def tegenstander_attacks(self): 
     if self.tegenstander.do_schade(self): print "%s was vermoord bij de gemene meneer %s!!!\nR.I.P." %(self.naam, self.tegenstander.naam) 
     
+  def voorwerpen(self):
+    if not inventory:
+      print ("Je hebt geen geld!")
+    else:
+      print ("Dit heb je allemaal gevonden: \n" + str(inventory))
+  
   def showRoom(self):
-    #kamer
     print(20 * "-")
     print("Hier ben je: " + kamers[currentKamer]["naam"])
-    print("hier kan je naartoe: %s ") % [i['naam'] for i in kamers.values() if kamers[currentKamer]]
-    #leuk zinnetje per kamer
-    if "note" in kamers[currentKamer]:
-        print (20 * "-")
-        print("--" + kamers[currentKamer]["note"])
     print(20 * "-")
 
+  def kaart(self):
+    print(20 * "-")
+    print("hier kan je naartoe: %s ") % [i['naam'] for i in kamers.values() if kamers[currentKamer]]
+    print(20 * "-")
+    
   #kamer systeem
   def move(self):
+    global inventory
     global currentKamer
     while True:
       self.showRoom()
@@ -158,20 +165,33 @@ class Speler(Character):
           #wanneer dat niet werkt
           else:
               print("Een wilde Wim zegt 'Daar mag je niet naartoe!'")
-      if naartoe[0] != "go":
-        print "Typ 'go' en dan 'waar je naartoe wilt'"
-        
+      if naartoe[0] == "get":
+        #pak je item
+        if "item" in kamers[currentKamer] and naartoe[1] in kamers[currentKamer]["item"]:
+        #toevoegen
+          inventory += [naartoe[1]]
+          print(naartoe[1] + " is gepakt door %s!") % p.naam
+          del kamers[currentKamer]["item"]
+        #geen item?
+        else:
+          print(20 * "-")
+          print("%s kan " + naartoe[1] + " niet pakken!") % p.naam
       else:
-        print "Typ 'go' en dan 'waar je naartoe wilt'"
+        print(20 * "-")
+        print ("Zelfs lukas kan nog beter lopen")
     
   def plaats(self):
-    print("---------------------------")
+    print(20 * "-")
     print("Je bevindt je hier: " + kamers[currentKamer]["naam"])
-    print("---------------------------")
+    print(20 * "-")
+    if "item" in kamers[currentKamer]:
+      print("Je ziet een: " + kamers[currentKamer]["item"])
+    print(20 * "-")
+    if "note" in kamers[currentKamer]:
+        print (20 * "-")
+        print("--" + kamers[currentKamer]["note"])
+    print(20 * "-")
 
-#Leuke zegjes
-zin = ['In de verte hoor je Henk van Ommen schreeuwen', 'Je ruikt een raar geurtje', 'Je ziet een brugger door de gang rennen, wim wordt kwaad',]
- 	
 #commando's 
 Commands = { 
   'quit': Speler.quit, 
@@ -183,16 +203,20 @@ Commands = {
   'attack': Speler.attack,
   'move' : Speler.move,
   'plaats' : Speler.plaats,
+  'voorwerpen' : Speler.voorwerpen,
+  'kaart' : Speler.kaart
   } 
 
 #dict voor layout
 kamers = {
 
             1 : {  "naam"  : "de Lobby" ,
+                   "item" : "briefje" ,
                    "a"  : 2,
                    "w" : 3 }  ,
 
             2 : {  "naam"  : "de Trap" ,
+                   "item" : "geld" ,
                    "d"  : 1,
                    "note"  : "Terwijl je de trap oploopt hoor je in de verte Henk van Ommen schreeuwen" }  ,            
 
@@ -229,24 +253,25 @@ kamers = {
 
 
 #introductie
+inventory = []
 p = Speler() 
 p.naam = raw_input("Wat is je naam ? ")
 os.system('clear')
 print (20 * '-')
 print "(type help voor een lijst van acties)"
-time.sleep(3)
+time.sleep(1)
 print (20 * '-')
 print "%s betreedt het schoolgebouw, zoekend naar Henk van Ommen." % p.naam
-time.sleep(3)
+time.sleep(1)
 print (20 * '-')
 print "Steen van de verkener groet %s." % p.naam
-time.sleep(3)
+time.sleep(1)
 print (20 * '-')
 os.system('clear')
-print("Hoe moet je lopen?")
-print("Eerst 'move' en dan 'go [waar je naartoe wilt]'")
+print("Hoe moet je lopen/ items pakken?")
+print("Eerst 'move' en dan 'go [waar je naartoe wilt]'/'get [item naam]'")
 print("Je bevind je hier: " + kamers[currentKamer]["naam"])
-time.sleep(6)
+time.sleep(1)
 os.system('clear')
 print("Steen van de verkener wenst je succes en zegt: vergeet niet dat help alle commando's toont")
 
